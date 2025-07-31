@@ -3,5 +3,8 @@ name = "rafaello-test"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+
 [dependencies]
 rafaello = { path = ".." }
+tokio = { version = "1.47.0", features = ["macros", "rt-multi-thread"] }

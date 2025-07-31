@@ -30,7 +30,7 @@ pub fn derive_component(input: TokenStream) -> TokenStream {
                 })
             }
             _ => None,
-        }).clone();
+        });
 
     // имя enum-а
     let msg_enum = format_ident!("{}Msg", self_ty);
@@ -91,12 +91,7 @@ impl Parse for HandlerInput {
 #[proc_macro_attribute]
 pub fn handler(args: TokenStream, item: TokenStream) -> TokenStream {
     // args – либо пусто, либо (Plus) / ("Plus")
-    let variant = parse_macro_input!(args as Attribute)
-        .and_then(|meta| match meta {
-            NestedMeta::Meta(Meta::Path(p)) => p.get_ident().cloned(),
-            _ => None,
-        })
-        .expect("#[handler] requires variant name");
+    let variant = parse_macro_input!(args as Meta);
 
     // прикрепляем к функции скрытый атрибут, чтобы derive смог найти
     let mut fun = parse_macro_input!(item as ItemFn);

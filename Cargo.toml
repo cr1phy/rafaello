@@ -6,6 +6,7 @@ edition = "2024"
 
 [workspace]
 members = [".", "rafaello-types"]
+exclude = ["rafaello-test"]
 
 [lib]
 crate-type = ["proc-macro"]
