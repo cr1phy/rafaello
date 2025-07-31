@@ -1,13 +1,12 @@
 extern crate proc_macro;
 
-use darling::ast::NestedMeta;
 use proc_macro::TokenStream;
 use syn::{braced, bracketed, parse::{Parse, ParseStream}, parse_macro_input, Attribute, DeriveInput, Ident, ItemFn, ItemImpl, LitStr, Meta, Token};
 use quote::{format_ident, quote};
 
 #[proc_macro_derive(Component)]
 pub fn derive_component(input: TokenStream) -> TokenStream {
-    let ast: DeriveInput = parse_macro_input!(input);
+    let ast = parse_macro_input!(input as DeriveInput);
     let self_ty = &ast.ident;
     let mut impl_block: Option<ItemImpl> = None;
 
@@ -18,19 +17,19 @@ pub fn derive_component(input: TokenStream) -> TokenStream {
     let impl_block = impl_block.expect("impl block required");
 
     // собираем (Variant, method) из #[handler]
-    let handlers = impl_block
+    let handlers: Option<TokenStream> = impl_block
         .items
         .iter()
         .filter_map(|it| match it {
             syn::ImplItem::Fn(f) => {
                 f.attrs.iter().find(|a| a.path().is_ident("rafaello_internal")).map(|a| {
                     let variant: syn::Ident = a.parse_args().unwrap();
-                    let name     = &f.sig.ident;
+                    let name = &f.sig.ident;
                     quote!( #variant => self.#name(), )
                 })
             }
             _ => None,
-        });
+        }).collect();
 
     // имя enum-а
     let msg_enum = format_ident!("{}Msg", self_ty);
