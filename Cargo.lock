@@ -344,8 +344,16 @@ dependencies = [
  "darling 0.21.0",
  "proc-macro2",
  "quote",
+ "rafaello-types",
  "ratatui",
  "syn",
+]
+
+[[package]]
+name = "rafaello-types"
+version = "0.1.0"
+dependencies = [
+ "ratatui",
 ]
 
 [[package]]

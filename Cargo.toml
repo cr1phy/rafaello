@@ -4,10 +4,14 @@ description = "A wrapper for creating TUI-applications with ratatui."
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+members = [".", "rafaello-types"]
+
 [lib]
 crate-type = ["proc-macro"]
 
 [dependencies]
+rafaello-types = { path = "rafaello-types" }
 darling = "0.21.0"
 proc-macro2 = "1.0.95"
 quote = "1.0.40"
